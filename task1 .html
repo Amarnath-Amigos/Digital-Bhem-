@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    
+    .calculator {
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+    }
+    
+    .display {
+        background-color: #f4f4f4;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: right;
+    }
+    
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 5px;
+    }
+    
+    button {
+        padding: 15px;
+        font-size: 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .number {
+        background-color: #f0f0f0;
+    }
+    
+    .operator {
+        background-color: #ff9800;
+        color: white;
+    }
+    
+    .calculate {
+        background-color: #4caf50;
+        color: white;
+    }
+    
+    .clear {
+        background-color: #f44336;
+        color: white;
+    }
+</style>
+
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="number" onclick="appendNumber('7')">7</button>
+            <button class="number" onclick="appendNumber('8')">8</button>
+            <button class="number" onclick="appendNumber('9')">9</button>
+            <button class="operator" onclick="appendOperator('/')">/</button>
+            <button class="number" onclick="appendNumber('4')">4</button>
+            <button class="number" onclick="appendNumber('5')">5</button>
+            <button class="number" onclick="appendNumber('6')">6</button>
+            <button class="operator" onclick="appendOperator('*')">*</button>
+            <button class="number" onclick="appendNumber('1')">1</button>
+            <button class="number" onclick="appendNumber('2')">2</button>
+            <button class="number" onclick="appendNumber('3')">3</button>
+            <button class="operator" onclick="appendOperator('-')">-</button>
+            <button class="number" onclick="appendNumber('0')">0</button>
+            <button class="number" onclick="appendDot()">.</button>
+            <button class="calculate" onclick="calculate()">=</button>
+            <button class="operator" onclick="appendOperator('+')">+</button>
+            <button class="clear" onclick="clearInput()">C</button>
+        </div>
+    </div>
+    <script>
+        let displayValue = '0';
+
+        function updateDisplay() {
+            document.getElementById('display').innerText = displayValue;
+        }
+
+        function appendNumber(number) {
+            if (displayValue === '0') {
+                displayValue = number;
+            } else {
+                displayValue += number;
+            }
+            updateDisplay();
+        }
+
+        function appendOperator(operator) {
+            const lastChar = displayValue[displayValue.length - 1];
+            if (!isNaN(lastChar) || lastChar === '.') {
+                displayValue += operator;
+            } else {
+                displayValue = displayValue.slice(0, -1) + operator;
+            }
+            updateDisplay();
+        }
+
+        function appendDot() {
+            if (!displayValue.includes('.')) {
+                displayValue += '.';
+            }
+            updateDisplay();
+        }
+
+        function clearInput() {
+            displayValue = '0';
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                const result = eval(displayValue);
+                displayValue = result.toString();
+                updateDisplay();
+            } catch (error) {
+                displayValue = 'Error';
+                updateDisplay();
+            }
+        }
+    </script>
+</body>
+
+</html>
