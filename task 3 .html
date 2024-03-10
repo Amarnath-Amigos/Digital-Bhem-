@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
+    
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form {
+        text-align: center;
+    }
+    
+    .hidden {
+        display: none;
+    }
+    #username{
+        height: 25px;
+        width: 250px;
+        background-color: aqua;
+        color: red;
+    }
+    #username{
+        height: 25px;
+        width: 250px;
+        background-color: aqua;
+        color: red;
+    }
+    #password{
+        height: 25px;
+        width: 250px;
+        background-color: aqua;
+        color: red;
+    }
+    fieldset {
+        background-image: url(img2.jpg);
+        width: 400px;
+    }
+</style>
+
+<body>
+    <fieldset>
+    <div class="container">
+        <h1>Learning Management System</h1>
+        <div id="loginForm" class="form">
+            <h2>Login</h2>
+            student Name: <br>
+            <input type="text" id="username" placeholder="Username" required> <br>
+            Enter your Password <br>
+            <input type="password" id="password" placeholder="Password" required> <br>
+            student ID <br>
+                <input type="text" id="username" placeholder="student ID" required> <br> 
+                Enter your address <br>
+                <input type="password" id="password" placeholder="address" required> <br>
+
+            <br> <button onclick="login()"  id="username">Login</button>
+        </div>
+        <div id="userPanel" class="hidden">
+            <h2>Welcome <span id="loggedInUser"></span></h2>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        // Dummy user data
+        const users = [{
+            username: 'student',
+            password: 'password',
+            role: 'student'
+        }, {
+            username: 'instructor',
+            password: 'password',
+            role: 'instructor'
+        }, {
+            username: 'admin',
+            password: 'password',
+            role: 'admin'
+        }];
+
+        // DOM elements
+        const loginForm = document.getElementById('loginForm');
+        const userPanel = document.getElementById('userPanel');
+        const loggedInUser = document.getElementById('loggedInUser');
+
+        // Function to check if user exists and login
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const user = users.find(user => user.username === username && user.password === password);
+            if (user) {
+                localStorage.setItem('loggedInUser', JSON.stringify(user));
+                showUserPanel(user);
+            } else {
+                alert('Invalid username or password');
+            }
+        }
+
+        // Function to logout
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            showLoginForm();
+        }
+
+        // Function to show login form
+        function showLoginForm() {
+            loginForm.classList.remove('hidden');
+            userPanel.classList.add('hidden');
+        }
+
+        // Function to show user panel
+        function showUserPanel(user) {
+            loginForm.classList.add('hidden');
+            userPanel.classList.remove('hidden');
+            loggedInUser.textContent = user.username;
+        }
+
+        // Check if user is already logged in
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+            showUserPanel(user);
+        } else {
+            showLoginForm();
+        }
+    </script>
+</body>
+</fieldset>
+</html>
