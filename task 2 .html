@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    fieldset {
+        background-image: url(img2.jpg);
+        width: 400px;
+    }
+    
+    #name {
+        height: 25px;
+        width: 250px;
+        margin-left: 60px;
+        color: red;
+        background-color: aqua;
+    }
+    
+    #checkIn {
+        height: 25px;
+        width: 250px;
+        margin-left: 20px;
+        color: red;
+        background-color: aqua;
+    }
+    
+    #totalDays {
+        height: 25px;
+        width: 250px;
+        margin-left: 40px;
+        color: red;
+        background-color: aqua;
+    }
+    
+    #totalPersons {
+        height: 25px;
+        width: 250px;
+        color: red;
+        margin-left: 25px;
+        background-color: aqua;
+    }
+    
+    #roomType {
+        height: 25px;
+        width: 250px;
+        margin-left: 35px;
+        color: red;
+        background-color: aqua;
+    }
+    
+    #totalCost {
+        height: 25px;
+        width: 250px;
+        margin-left: 45px;
+        color: red;
+        background-color: aqua;
+    }
+    
+    #advancePayment {
+        height: 25px;
+        width: 250px;
+        color: red;
+        background-color: aqua;
+    }
+    
+    #balance {
+        height: 25px;
+        width: 250px;
+        color: red;
+        margin-left: 55px;
+        background-color: aqua;
+    }
+    
+    #button {
+        height: 25px;
+        width: 250px;
+        color: red;
+        margin-left: 95px;
+        background-color: aqua;
+    }
+</style>
+
+<body>
+    <fieldset>
+        <div class="container">
+            <h2>Hotel Booking Registration Form</h2>
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div><br> <br>
+                <div class="form-group">
+                    <label for="checkIn">Check-in Date:</label>
+                    <input type="date" id="checkIn" name="checkIn" required>
+                </div><br>
+                <div class="form-group">
+                    <label for="totalDays">Total Days:</label>
+                    <input type="number" id="totalDays" name="totalDays" min="1" required>
+                </div><br>
+                <div class="form-group">
+                    <label for="totalPersons">Total Persons:</label>
+                    <input type="number" id="totalPersons" name="totalPersons" min="1" required>
+                </div><br>
+                <div class="form-group">
+                    <label for="roomType">Room Type:</label>
+                    <select id="roomType" name="roomType" required>
+                    <option value="Delux">Delux</option>
+                    <option value="Suite">Suite</option>
+                </select>
+                </div><br>
+                <div class="form-group">
+                    <label for="amenities">Amenities:</label>
+                    <input type="checkbox" id="ac" name="amenities" value="AC">
+                    <label for="ac">AC</label>
+                    <input type="checkbox" id="locker" name="amenities" value="Locker">
+                    <label for="locker">Locker</label>
+                </div><br>
+                <div class="form-group">
+                    <label for="advancePayment">Advance Payment:</label>
+                    <input type="number" id="advancePayment" name="advancePayment" min="0" required>
+                </div><br>
+                <div class="form-group">
+                    <label for="totalCost">Total Cost:</label>
+                    <input type="text" id="totalCost" name="totalCost" readonly>
+                </div><br>
+                <div class="form-group">
+                    <label for="balance">Balance:</label>
+                    <input type="text" id="balance" name="balance" readonly>
+                </div><br>
+                <button type="submit" id="button">Submit</button>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById('bookingForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                // Retrieve form data
+                const name = document.getElementById('name').value;
+                const checkIn = document.getElementById('checkIn').value;
+                const totalDays = parseInt(document.getElementById('totalDays').value);
+                const totalPersons = parseInt(document.getElementById('totalPersons').value);
+                const roomType = document.getElementById('roomType').value;
+                const amenities = Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map(el => el.value);
+                const advancePayment = parseInt(document.getElementById('advancePayment').value);
+
+                // Room rates
+                const roomRates = {
+                    Delux: 100, // Assuming rate per day
+                    Suite: 150,
+                    AC: 50, // Additional cost per day for amenities
+                    Locker: 20
+                };
+
+                // Calculate room cost
+                let roomCost = roomRates[roomType] * totalDays;
+
+                // Calculate amenities cost
+                let amenitiesCost = amenities.reduce((acc, amenity) => acc + roomRates[amenity], 0) * totalPersons;
+
+                // Extra person charge if applicable
+                const extraPersonCharge = totalPersons > 1 ? 1000 * (totalPersons - 1) * totalDays : 0;
+
+                // Total cost
+                const totalCost = roomCost + amenitiesCost + extraPersonCharge;
+
+                // Calculate balance
+                const balance = totalCost - advancePayment;
+
+                // Update UI
+                document.getElementById('totalCost').value = totalCost;
+                document.getElementById('balance').value = balance;
+            });
+        </script>
+</body>
+</fieldset>
+
+</html>
